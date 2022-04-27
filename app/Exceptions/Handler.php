@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +38,27 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof AuthorizationException)
+        {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+            return response()->json(['message' => 'resource not found'], 404);
+        }
+
+        return parent::render($request, $exception);
     }
 }

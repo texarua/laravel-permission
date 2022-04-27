@@ -18,7 +18,7 @@ Route::group(['namespace' => 'App\Http\Controllers\API'], function() {
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login')->name('login');
     Route::group(['middleware' => 'auth:api'],function () {
-        Route::get('/product', 'ProductController@index');
+        Route::get('/products', 'ProductController@index')->middleware('can:products');
     });
 });
 

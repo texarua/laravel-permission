@@ -13,8 +13,9 @@ class ProductController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        return $request->user();
         return 'zo duoc trang view';
     }
 }
